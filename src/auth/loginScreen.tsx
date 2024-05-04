@@ -11,8 +11,11 @@ import {
 } from 'react-native';
 import {SubmitButton} from '../components/chatify-button';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useAuth} from '../hooks/authContext';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
+  const {login} = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
@@ -77,9 +80,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         );
       }
 
-      console.log('Login successful:', response.data);
-
-      navigation.navigate('Home');
+      // console.log('Login successful:', response.data);
+      if (response.data.status === 'OK') {
+        const token = response.data.token;
+        login(token);
+      }
     } catch (error) {
       console.error('Error logging in:', error);
     } finally {
@@ -120,7 +125,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
               <TextInput
                 className={` ${
                   isEmailNull ? 'border-red-500' : ''
-                } border border-slate-400 rounded-lg px-4`}
+                } border border-slate-400 rounded-lg px-4 text-gray-600`}
                 placeholder="Email"
                 onChangeText={setEmail}
                 value={email}
@@ -135,7 +140,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
               ) : null}
               <TouchableOpacity className="relative">
                 <TextInput
-                  className={`border border-slate-400 rounded-lg pl-4 pr-12 ${
+                  className={`border border-slate-400 rounded-lg pl-4 pr-12 text-gray-600 ${
                     isPasswordNull ? 'border-red-500' : ''
                   }`}
                   placeholder="Password"
