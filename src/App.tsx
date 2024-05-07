@@ -11,7 +11,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {Platform, ActivityIndicator, View, Text} from 'react-native';
 import {AuthProvider, useAuth} from './hooks/authContext';
 import MIcon from 'react-native-vector-icons/Ionicons';
-
+import {MainTabNavigator} from './navigation/bottom-tab.navigation';
 import ChatScreen from './screens/chatScreen';
 
 const Stack = createStackNavigator();
@@ -45,39 +45,9 @@ const App = () => {
               drawerIcon: () => (
                 <MIcon name="chatbubbles" size={20} color="gray" />
               ),
-            }}>
-            {() => (
-              <Tab.Navigator
-                screenOptions={{
-                  tabBarShowLabel: true,
-                  headerShown: false,
-                  tabBarHideOnKeyboard: true,
-                }}>
-                <Tab.Screen
-                  name="Chat-tab"
-                  component={HomeScreen}
-                  options={{
-                    tabBarLabel: ({focused}) => (
-                      <Text
-                        className="text-[10px]"
-                        style={{color: focused ? 'red' : 'gray'}}>
-                        Profile
-                      </Text>
-                    ),
-                    headerShown: false,
-                    tabBarIcon: ({color, size, focused}) => (
-                      <MIcon
-                        name={focused ? 'chatbubbles' : 'chatbubbles-outline'}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
-                />
-                {/* Add more tab screens here if needed */}
-              </Tab.Navigator>
-            )}
-          </Drawer.Screen>
+            }}
+            component={MainTabNavigator}
+          />
 
           <Drawer.Screen
             name="Chat22"
@@ -87,34 +57,9 @@ const App = () => {
               drawerIcon: () => (
                 <MIcon name="chatbubbles" size={20} color="gray" />
               ),
-            }}>
-            {() => (
-              <Tab.Navigator>
-                <Tab.Screen
-                  name="Chat-tab"
-                  component={ChatScreen}
-                  options={{
-                    headerShown: false,
-                    tabBarLabel: 'Chats',
-                    tabBarIcon: ({color, size}) => (
-                      <MIcon name="chatbubbles" size={size} color={color} />
-                    ),
-                  }}
-                />
-                <Tab.Screen
-                  name="Chat-tabss"
-                  component={HomeScreen}
-                  options={{
-                    headerShown: false,
-                    tabBarLabel: 'Chatsss',
-                    tabBarIcon: ({color, size}) => (
-                      <MIcon name="chatbubbles" size={size} color={color} />
-                    ),
-                  }}
-                />
-              </Tab.Navigator>
-            )}
-          </Drawer.Screen>
+            }}
+            component={ChatScreen}
+          />
         </Drawer.Navigator>
       ) : (
         <Stack.Navigator>

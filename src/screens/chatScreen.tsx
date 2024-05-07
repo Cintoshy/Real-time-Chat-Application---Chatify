@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 const ChatScreen = () => {
   return (
     <View>
-      <Text>Hello CHat</Text>
+      <Text>Hello Pogi</Text>
     </View>
   );
 };
