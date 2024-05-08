@@ -3,12 +3,10 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import RegisterScreen from './auth/registerScreen';
 import LoginScreen from './auth/loginScreen';
-import HomeScreen from './screens/homseScreen';
 import SplashScreen from 'react-native-splash-screen';
-import {Platform, ActivityIndicator, View, Text} from 'react-native';
+import {Platform, ActivityIndicator, View} from 'react-native';
 import {AuthProvider, useAuth} from './hooks/authContext';
 import MIcon from 'react-native-vector-icons/Ionicons';
 import {MainTabNavigator} from './navigation/bottom-tab.navigation';
@@ -16,13 +14,14 @@ import ChatScreen from './screens/chatScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
 
 const App = () => {
   const {token, isLoading} = useAuth();
 
   useEffect(() => {
-    if (Platform.OS === 'android') SplashScreen.hide();
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
+    }
   }, []);
 
   if (isLoading) {
