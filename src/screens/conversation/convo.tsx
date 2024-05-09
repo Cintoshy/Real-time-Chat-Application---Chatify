@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Animated} from 'react-native';
+import {View, Text, TextInput, Animated, FlatList} from 'react-native';
 import {
   HandlerStateChangeEvent,
   PanGestureHandler,
@@ -140,8 +140,10 @@ const Convo = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#D1D5DB', paddingTop: 5}}>
-      <ScrollView>
-        {items.map(item => {
+      <FlatList
+        data={items}
+        keyExtractor={item => item.key.toString()}
+        renderItem={({item}) => {
           const translateX = new Animated.Value(0);
 
           const handleGesture = Animated.event(
@@ -150,9 +152,9 @@ const Convo = () => {
           );
 
           const limitedTranslateX = translateX.interpolate({
-            inputRange: [-150, 0, 150], // Range of translation
-            outputRange: item.sender === 'Me' ? [-150, 0, 0] : [0, 0, 150], // Output range with clamped values
-            extrapolate: 'clamp', // Clamp values outside inputRange
+            inputRange: [-150, 0, 150],
+            outputRange: item.sender === 'Me' ? [-150, 0, 0] : [0, 0, 150],
+            extrapolate: 'clamp',
           });
 
           return (
@@ -172,14 +174,14 @@ const Convo = () => {
                   borderRadius: 20,
                   alignSelf: item.sender === 'Me' ? 'flex-end' : 'flex-start',
                   backgroundColor: item.sender === 'Me' ? '#3B82F6' : '#6B7280',
-                  transform: [{translateX: limitedTranslateX}], // Use limitedTranslateX
+                  transform: [{translateX: limitedTranslateX}],
                 }}>
                 <Text>{item.message}</Text>
               </Animated.View>
             </PanGestureHandler>
           );
-        })}
-      </ScrollView>
+        }}
+      />
       <View>
         <TextInput
           style={{
