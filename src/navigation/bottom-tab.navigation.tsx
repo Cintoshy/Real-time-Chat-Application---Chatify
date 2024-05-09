@@ -12,7 +12,8 @@ export const MainTabNavigator = () => (
       tabBarShowLabel: true,
       headerShown: false,
       tabBarHideOnKeyboard: true,
-    }}>
+    }}
+    initialRouteName="HomeScreen">
     <Tab.Screen
       name="Chat-tab"
       component={HomeScreen}

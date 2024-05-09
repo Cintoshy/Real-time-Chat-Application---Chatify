@@ -31,6 +31,11 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     console.log('Searching for:');
   };
 
+  const handlePress = () => {
+    // Navigate to a specific screen when the item is clicked
+    navigation.navigate('Conversation');
+  };
+
   const [Items, setItems] = useState([
     {key: 1, sender: 'Me', message: "Hey, how's it going?"},
     {key: 2, sender: 'layl', message: "Hey, how's it going?"},
@@ -84,10 +89,14 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         showsVerticalScrollIndicator={false}>
         <View className="space-y-3 px-5 py-2">
           {Items.map(item => (
-            <View className="w-full bg-gray-200 p-4 rounded-xl" key={item.key}>
-              <Text style={styles.sender}>{item.sender}:</Text>
-              <Text style={styles.message}>{item.message}</Text>
-            </View>
+            <TouchableOpacity onPress={handlePress}>
+              <View
+                className="w-full bg-gray-200 p-4 rounded-xl"
+                key={item.key}>
+                <Text style={styles.sender}>{item.sender}:</Text>
+                <Text style={styles.message}>{item.message}</Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>

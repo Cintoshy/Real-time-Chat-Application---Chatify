@@ -10,10 +10,11 @@ import {Platform, ActivityIndicator, View} from 'react-native';
 import {AuthProvider, useAuth} from './hooks/authContext';
 import MIcon from 'react-native-vector-icons/Ionicons';
 import {MainTabNavigator} from './navigation/bottom-tab.navigation';
-import ChatScreen from './screens/chatScreen';
+import Convo from './screens/conversation/convo';
+import HomeScreen from './screens/homseScreen';
+import {DrawerNavigator} from './navigation/drawer-tab.navigation';
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 const App = () => {
   const {token, isLoading} = useAuth();
@@ -34,46 +35,31 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      {token ? (
-        <Drawer.Navigator>
-          <Drawer.Screen
-            name="Chats"
-            options={{
-              drawerLabel: 'Chats',
-              title: 'Chats',
-              drawerIcon: () => (
-                <MIcon name="chatbubbles" size={20} color="gray" />
-              ),
-            }}
-            component={MainTabNavigator}
-          />
-
-          <Drawer.Screen
-            name="Chat22"
-            options={{
-              drawerLabel: 'Chat22',
-              title: 'Chat22',
-              drawerIcon: () => (
-                <MIcon name="chatbubbles" size={20} color="gray" />
-              ),
-            }}
-            component={ChatScreen}
-          />
-        </Drawer.Navigator>
-      ) : (
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            options={{headerShown: false}}
-            component={LoginScreen}
-          />
-          <Stack.Screen
-            name="Register"
-            options={{headerShown: false}}
-            component={RegisterScreen}
-          />
-        </Stack.Navigator>
-      )}
+      <Stack.Navigator initialRouteName="ChatScreen">
+        {token ? (
+          <>
+            <Stack.Screen
+              name="HomeDrawer"
+              component={DrawerNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen name="Conversation" component={Convo} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{headerShown: false}}
+            />
+          </>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
