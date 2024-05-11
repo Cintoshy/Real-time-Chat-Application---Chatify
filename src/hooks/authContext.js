@@ -1,10 +1,12 @@
 import React, {useEffect, createContext, useContext, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {jwtDecode} from 'jwt-decode';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -12,8 +14,11 @@ export const AuthProvider = ({children}) => {
       try {
         setIsLoading(true);
         const storedToken = await AsyncStorage.getItem('token');
+
         if (storedToken) {
           setToken(storedToken);
+          const decodedUser = jwtDecode(storedToken);
+          setUser(decodedUser);
         }
       } catch (error) {
         console.error('Error loading token:', error);
@@ -33,6 +38,8 @@ export const AuthProvider = ({children}) => {
     try {
       setToken(userData);
       await AsyncStorage.setItem('token', userData);
+      const decodedUser = jwtDecode(userData);
+      setUser(decodedUser);
     } catch (error) {
       console.error('Error saving token:', error);
     }
@@ -48,7 +55,7 @@ export const AuthProvider = ({children}) => {
   };
 
   return (
-    <AuthContext.Provider value={{token, login, logout, isLoading}}>
+    <AuthContext.Provider value={{token, user, login, logout, isLoading}}>
       {children}
     </AuthContext.Provider>
   );

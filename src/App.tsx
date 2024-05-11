@@ -2,16 +2,12 @@ import React, {useEffect} from 'react';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import RegisterScreen from './auth/registerScreen';
 import LoginScreen from './auth/loginScreen';
 import SplashScreen from 'react-native-splash-screen';
 import {Platform, ActivityIndicator, View} from 'react-native';
 import {AuthProvider, useAuth} from './hooks/authContext';
-import MIcon from 'react-native-vector-icons/Ionicons';
-import {MainTabNavigator} from './navigation/bottom-tab.navigation';
 import Convo from './screens/conversation/convo';
-import HomeScreen from './screens/homseScreen';
 import {DrawerNavigator} from './navigation/drawer-tab.navigation';
 
 const Stack = createStackNavigator();

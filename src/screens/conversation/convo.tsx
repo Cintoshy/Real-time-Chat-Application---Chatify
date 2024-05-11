@@ -4,7 +4,6 @@ import {
   HandlerStateChangeEvent,
   PanGestureHandler,
   PanGestureHandlerEventPayload,
-  ScrollView,
   State,
 } from 'react-native-gesture-handler';
 
@@ -122,19 +121,20 @@ const Convo = () => {
     if (sender === 'Me') {
       if (event.nativeEvent.translationX < -maxTranslate) {
         // Reply action
-        console.log('Reply action activated for Me sender');
+        // console.log('Reply action activated for Me sender');
       }
     } else {
       if (event.nativeEvent.translationX > maxTranslate) {
         // Reply action
-        console.log('Reply action activated for non-Me sender');
+        // console.log('Reply action activated for non-Me sender');
       }
     }
 
-    // Reset translation after release
     Animated.spring(translateX, {
       toValue: 0,
       useNativeDriver: true,
+      stiffness: 270,
+      damping: 30,
     }).start();
   };
 
@@ -172,6 +172,7 @@ const Convo = () => {
                   marginVertical: 4,
                   marginHorizontal: 4,
                   borderRadius: 20,
+                  maxWidth: '70%',
                   alignSelf: item.sender === 'Me' ? 'flex-end' : 'flex-start',
                   backgroundColor: item.sender === 'Me' ? '#3B82F6' : '#6B7280',
                   transform: [{translateX: limitedTranslateX}],

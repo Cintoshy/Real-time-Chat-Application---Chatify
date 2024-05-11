@@ -10,11 +10,13 @@ import {MainTabNavigator} from './bottom-tab.navigation';
 import ChatScreen from '../screens/chatScreen';
 
 import {useAuth} from '../hooks/authContext';
+import {Text} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator = () => {
-  const {logout} = useAuth();
+  const {user, logout} = useAuth();
+  const {name} = user;
 
   const logoutUser = async () => {
     try {
@@ -26,9 +28,18 @@ export const DrawerNavigator = () => {
   const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     return (
       <DrawerContentScrollView {...props}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            marginVertical: 10,
+            paddingLeft: 12,
+          }}>
+          Welcome, {name}!
+        </Text>
         <DrawerItemList {...props} />
         <DrawerItem
-          label="Logout"
+          label={`Logout (${name})`}
           icon={({color, size}) => (
             <MIcon name="exit" size={size} color={color} />
           )}
