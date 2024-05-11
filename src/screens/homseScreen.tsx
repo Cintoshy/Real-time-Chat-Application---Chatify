@@ -3,10 +3,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
-  StyleSheet,
   TextInput,
-  KeyboardAvoidingView,
   RefreshControl,
   FlatList,
 } from 'react-native';
@@ -63,7 +60,6 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         );
         setChannels(response.data);
       } catch (error) {
-        // Network error or server error
         console.error('Error fetching channels:', error);
       }
     };
