@@ -142,6 +142,7 @@ const Convo = () => {
     <View style={{flex: 1, backgroundColor: '#D1D5DB', paddingTop: 5}}>
       <FlatList
         data={items}
+        inverted
         keyExtractor={item => item.key.toString()}
         renderItem={({item}) => {
           const translateX = new Animated.Value(0);

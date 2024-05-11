@@ -58,7 +58,9 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   useEffect(() => {
     const getChannels = async () => {
       try {
-        const response = await axios.get('http://10.0.2.2:8004/channels');
+        const response = await axios.get(
+          `http://10.0.2.2:8004/channels/${userId}`,
+        );
         setChannels(response.data);
       } catch (error) {
         // Network error or server error
