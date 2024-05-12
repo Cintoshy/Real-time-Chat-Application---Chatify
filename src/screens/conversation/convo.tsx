@@ -47,101 +47,6 @@ const Convo = () => {
     getConversation();
     // return () => {};
   }, []);
-  const [items, setItems] = useState([
-    {
-      key: 1,
-      sender: 'Me',
-      receiver: 'John',
-      message:
-        "Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?",
-    },
-    {
-      key: 2,
-      sender: 'Layl',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 3,
-      sender: 'Bryan',
-      receiver: 'Me',
-      message:
-        "Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?",
-    },
-    {
-      key: 4,
-      sender: 'Me',
-      receiver: 'John',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 5,
-      sender: 'Layl',
-      receiver: 'Me',
-      message:
-        "Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?Hey, how's it going?",
-    },
-    {
-      key: 6,
-      sender: 'Bryan',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 7,
-      sender: 'Me',
-      receiver: 'John',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 8,
-      sender: 'Layl',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 9,
-      sender: 'Bryan',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 10,
-      sender: 'Me',
-      receiver: 'John',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 11,
-      sender: 'Layl',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 12,
-      sender: 'Bryan',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 13,
-      sender: 'Me',
-      receiver: 'John',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 14,
-      sender: 'Layl',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    {
-      key: 15,
-      sender: 'Bryan',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-  ]);
 
   const [newMessage, setNewMessage] = useState('');
 
@@ -178,7 +83,7 @@ const Convo = () => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#D1D5DB', paddingTop: 5}}>
+    <View className="flex-1 bg-[#D1D5DB]">
       <FlatList
         data={Conversation}
         inverted
@@ -235,15 +140,9 @@ const Convo = () => {
           );
         }}
       />
-      <View>
+      <View className="p-1.5">
         <TextInput
-          style={{
-            borderWidth: 1,
-            borderColor: '#9CA3AF',
-            margin: 4,
-            padding: 8,
-            borderRadius: 20,
-          }}
+          className="border border-slate-500 m-1 py-2 px-4 rounded-full"
           onChangeText={text => setNewMessage(text)}
           value={newMessage}
           placeholder="Type your message here..."

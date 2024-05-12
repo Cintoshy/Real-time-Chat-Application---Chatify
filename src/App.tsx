@@ -8,8 +8,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {Platform, ActivityIndicator, View} from 'react-native';
 import {AuthProvider, useAuth} from './hooks/authContext';
 import Convo from './screens/conversation/convo';
-import ProfileScreen from './screens/sample';
 import {DrawerNavigator} from './navigation/drawer-tab.navigation';
+import NewChatScreen from './screens/new-chat/newchat.screen';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +41,7 @@ const App = () => {
               options={{headerShown: false}}
             />
             <Stack.Screen name="Conversation" component={Convo} />
+            <Stack.Screen name="New Chat" component={NewChatScreen} />
           </>
         ) : (
           <>

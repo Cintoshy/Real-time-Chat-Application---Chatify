@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import {DrawerActions} from '@react-navigation/native';
-import MIcon from 'react-native-vector-icons/Ionicons';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MIcon1 from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import moment from 'moment';
@@ -156,13 +156,11 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 12}}
       />
-      {/* <>
-        <View className="flex flex-row h-16 w-full justify-evenly items-center bg-[#60A3D9] rounded-t-3xl">
-          <MIcon name="chatbubbles" size={25} color="black" />
-          <MIcon name="people" size={25} color="black" />
-          <MIcon1 name="flash" size={25} color="black" />
+      <TouchableOpacity onPress={() => navigation.navigate('New Chat')}>
+        <View className="absolute bottom-10 right-10 h-12 w-12 justify-evenly items-center bg-[#60A3D9] rounded-full">
+          <MIcon name="pencil" size={20} color="white" />
         </View>
-      </> */}
+      </TouchableOpacity>
     </View>
   );
 };
