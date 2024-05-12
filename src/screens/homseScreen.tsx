@@ -123,7 +123,10 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
           const lastConversation = conversation[conversation.length - 1];
           return (
             <>
-              <TouchableOpacity onPress={() => handlePress()}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Conversation', {itemId: item._id})
+                }>
                 <View className="bg-slate-50 p-4 rounded-xl mb-3 border border-slate-100">
                   <View className="flex flex-row gap-4 justify-self-center">
                     <View className="h-12 w-12 rounded-full bg-gray-500" />

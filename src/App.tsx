@@ -8,6 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {Platform, ActivityIndicator, View} from 'react-native';
 import {AuthProvider, useAuth} from './hooks/authContext';
 import Convo from './screens/conversation/convo';
+import ProfileScreen from './screens/sample';
 import {DrawerNavigator} from './navigation/drawer-tab.navigation';
 
 const Stack = createStackNavigator();
