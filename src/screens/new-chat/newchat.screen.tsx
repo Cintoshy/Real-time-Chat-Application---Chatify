@@ -8,12 +8,15 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import {useAuth} from '../../hooks/authContext';
 
 interface User {
   _id: any;
   name: string;
 }
 const NewChatScreen = ({navigation}: {navigation: any}) => {
+  const {user} = useAuth();
+  const {userId} = user;
   const [suggestedUser, setSuggestedUser] = useState<User[]>([]);
   const [pressedItem, setPressedItem] = useState<string | null>(null);
   useEffect(() => {
@@ -52,7 +55,10 @@ const NewChatScreen = ({navigation}: {navigation: any}) => {
               onPressIn={() => setPressedItem(item._id)}
               onPressOut={() => setPressedItem(null)}
               onPress={() =>
-                navigation.navigate('Conversation', {itemId: item._id})
+                navigation.navigate('Conversation', {
+                  firstId: userId,
+                  secondId: item._id,
+                })
               }
               activeOpacity={0.5}
               style={{

@@ -36,10 +36,10 @@ export const AuthProvider = ({children}) => {
 
   const login = async userData => {
     try {
-      setToken(userData);
       await AsyncStorage.setItem('token', userData);
       const decodedUser = jwtDecode(userData);
       setUser(decodedUser);
+      setToken(userData);
     } catch (error) {
       console.error('Error saving token:', error);
     }
