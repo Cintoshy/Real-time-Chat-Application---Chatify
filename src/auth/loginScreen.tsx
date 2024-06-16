@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react';
+import axiosInstance from '../services/api/axiosInstance.ts';
 import {
   View,
   Text,
@@ -60,7 +60,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     }
 
     try {
-      const response = await axios.post('http://10.0.2.2:8004/auth/login', {
+      const response = await axiosInstance.post('/auth/login', {
         email,
         password,
       });
@@ -127,6 +127,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
                   isEmailNull ? 'border-red-500' : ''
                 } border border-slate-400 rounded-lg px-4 text-gray-600`}
                 placeholder="Email"
+                placeholderTextColor="gray"
                 onChangeText={setEmail}
                 value={email}
                 autoCapitalize="none"
@@ -144,6 +145,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
                     isPasswordNull ? 'border-red-500' : ''
                   }`}
                   placeholder="Password"
+                  placeholderTextColor="gray"
                   onChangeText={setPassword}
                   value={password}
                   secureTextEntry={!isShowPassword}

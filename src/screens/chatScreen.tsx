@@ -1,23 +1,52 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 
-const ChatScreen = () => {
-  const [items, setItems] = useState([
-    {key: 1, sender: 'Me', receiver: 'John', message: "Hey, how's it going?"},
-    {key: 2, sender: 'Layl', receiver: 'Me', message: "Hey, how's it going?"},
-    {
-      key: 3,
-      sender: 'Bryan',
-      receiver: 'Me',
-      message: "Hey, how's it going?",
-    },
-    // Add more items as needed
-  ]);
+// Mock function to create a new channel
+const createChannel = async () => {
+  return new Promise<{id: string}>(resolve => {
+    setTimeout(() => {
+      resolve({id: 'newChannel123'});
+    }, 1000); // Simulating an API call delay
+  });
+};
+
+const ChatScreen: React.FC = () => {
+  const [channelId, setChannelId] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleCreateChannel = async () => {
+    setLoading(true);
+    try {
+      const newChannel = await createChannel();
+      setChannelId(newChannel.id);
+      console.log(`Channel created with ID: ${newChannel.id}`);
+    } catch (error) {
+      console.error('Error creating channel:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <View>
-      <Text>Hello Pogi</Text>
+    <View style={styles.container}>
+      <Button
+        title="Create Channel"
+        onPress={handleCreateChannel}
+        disabled={loading}
+      />
+      {loading && <Text>Creating channel...</Text>}
+      {channelId && <Text>Channel ID: {channelId}</Text>}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+});
 
 export default ChatScreen;

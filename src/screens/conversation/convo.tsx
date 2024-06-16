@@ -1,7 +1,18 @@
-import {RouteProp, useRoute} from '@react-navigation/native';
-import axios, {AxiosError} from 'axios';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {AxiosError} from 'axios';
+import axiosInstance from '../../services/api/axiosInstance.ts';
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, Animated, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Animated,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MIconics from 'react-native-vector-icons/Ionicons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import {
   HandlerStateChangeEvent,
   PanGestureHandler,
@@ -9,39 +20,44 @@ import {
   State,
 } from 'react-native-gesture-handler';
 import {useAuth} from '../../hooks/authContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
-type ConvoScreenRouteProp = RouteProp<
-  {Convo: {firstId: string; secondId: string}},
-  'Convo'
->;
+type ConvoScreenRouteProp = RouteProp<{
+  Convo: {firstId: string; secondId: string; conversantName: string};
+}>;
 
-interface Conversation {
+type Conversation = {
   _id: string;
   channel: string;
+  message: any;
   conversation: CoversationContent[] | null;
-}
-interface CoversationContent {
+};
+type CoversationContent = {
   _id: string;
   sender: string;
   content: string;
   replyTo: string | null;
   isSeen: boolean;
   timestamp: string;
-}
-const Convo = () => {
+};
+const Convo = ({navigation}: {navigation: any}) => {
   const {user} = useAuth();
   const {userId} = user;
   const route = useRoute<ConvoScreenRouteProp>();
-  const {firstId, secondId} = route.params;
+  const {firstId, secondId, conversantName} = route.params;
+  const [loading, setLoading] = useState(false);
 
   const [Conversation, setConversation] = useState<Conversation[]>([]);
   useEffect(() => {
     const getConversation = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(
-          `http://10.0.2.2:8004/conversation/${firstId}/${secondId}`,
+        const response = await axiosInstance.get(
+          `/conversation/${firstId}/${secondId}`,
         );
         setConversation(response.data);
+        // console.log(response.data);
       } catch (error: unknown) {
         if (
           error instanceof AxiosError &&
@@ -52,17 +68,37 @@ const Convo = () => {
         } else {
           console.error('Error fetching channels:', error);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     getConversation();
-    // return () => {};
   }, []);
 
   const [newMessage, setNewMessage] = useState('');
 
-  const sendMessage = () => {
-    // Your sendMessage logic
+  // create channel first
+  // await the channel created
+  // then send the message by using the new channel id
+
+  const sendMessage = async () => {
+    // if (Conversation[0].message === 'Fresh Channel') {
+    try {
+      const response = await axiosInstance.post('/conversation/sendMessage', {
+        conversationId: '665dca0ba984188e8cd8de16',
+        firstId: userId,
+        secondId: '663f5e01e5d31b00a487009c',
+        content: newMessage,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setNewMessage('');
+    }
+    // } else {
+    //   // channel id of existing channel
+    // }
   };
 
   const handleRelease = (
@@ -92,22 +128,43 @@ const Convo = () => {
       damping: 30,
     }).start();
   };
-
   return (
     <View className="flex-1 bg-[#D1D5DB]">
-      {Conversation.length == 0 ? (
-        <View style={{flex: 1}}>
-          <Text>dhadbawhdba</Text>
+      <View className="flex-row w-full h-16 bg-white items-center">
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View className="mx-4">
+            <AntIcon name="arrowleft" size={25} />
+          </View>
+        </TouchableOpacity>
+        {conversantName != null ? (
+          <Text className="text-lg font-medium text-slate-600">
+            {conversantName}{' '}
+          </Text>
+        ) : (
+          <Text className="text-lg">New Conversation </Text>
+        )}
+      </View>
+      {(Conversation.length === 0 ||
+        Conversation[0].message === 'Fresh Channel') &&
+      !loading ? (
+        <View style={{flex: 1}} className="items-center justify-center">
+          <MIcon name="android-messages" size={50} color="white" />
+
+          <Text className="text-gray-600 font-bold text-md opacity-50">
+            No Conversation
+          </Text>
         </View>
       ) : (
         <FlatList
           data={Conversation}
-          keyExtractor={item => item._id.toString()}
+          keyExtractor={item =>
+            item._id != null ? item._id : Math.random().toString()
+          }
           renderItem={({item}) => {
             return (
               <View>
                 {item.conversation &&
-                  item.conversation.map(message => {
+                  item.conversation.map((message: any) => {
                     const translateX = new Animated.Value(0);
 
                     const handleGesture = Animated.event(
@@ -157,14 +214,31 @@ const Convo = () => {
           inverted
         />
       )}
-      <View className="p-1.5">
-        <TextInput
-          className="border border-slate-500 m-1 py-2 px-4 rounded-full"
-          onChangeText={text => setNewMessage(text)}
-          value={newMessage}
-          placeholder="Type your message here..."
-          onSubmitEditing={sendMessage}
-        />
+      <View className="flex-row p-1.5 items-center">
+        <View
+          className={`transform delay-1000 ease-in-out grow transition-all`}>
+          <TextInput
+            className=" text-gray-600 font-semibold bg-slate-100 border-[0.5px] border-slate-200 m-1 py-2 px-4 rounded-full"
+            onChangeText={text => setNewMessage(text)}
+            value={newMessage}
+            placeholder="Type your message here..."
+            placeholderTextColor="gray"
+            // onSubmitEditing={sendMessage}
+          />
+        </View>
+        {newMessage.trim().length > 0 ? (
+          <View className="ml-1 mr-0.5">
+            <TouchableOpacity onPress={() => sendMessage()}>
+              <MIconics name="send" size={30} color="#60A3D9" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View className="-mt-0.5 ml-1 mr-0.5">
+            <TouchableOpacity>
+              <AntIcon name="like1" size={30} color="#60A3D9" />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );

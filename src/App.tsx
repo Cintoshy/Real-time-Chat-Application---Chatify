@@ -24,7 +24,7 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator size={'large'} />
       </View>
     );
@@ -40,7 +40,11 @@ const App = () => {
               component={DrawerNavigator}
               options={{headerShown: false}}
             />
-            <Stack.Screen name="Conversation" component={Convo} />
+            <Stack.Screen
+              name="Conversation"
+              options={{headerShown: false}}
+              component={Convo}
+            />
             <Stack.Screen name="New Chat" component={NewChatScreen} />
           </>
         ) : (

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, {useState} from 'react';
+import axiosInstance from '../services/api/axiosInstance.ts';
 import {
   View,
   Text,
@@ -31,7 +32,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
       return;
     }
     try {
-      const response = await axios.post('http://10.0.2.2:8004/auth/register', {
+      const response = await axiosInstance.post('/auth/register', {
         name,
         email,
         password,
@@ -82,24 +83,27 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
     <View className="flex-1 justify-center items-center bg-white px-4">
       <Text className="text-2xl font-bold mb-8">Register</Text>
       <TextInput
-        className="border border-gray-300 rounded w-full h-10 px-3 mb-4"
+        className="text-gray-600 border border-gray-300 rounded w-full h-10 px-3 mb-4"
         placeholder="Name"
+        placeholderTextColor="gray"
         onChangeText={setName}
         value={name}
         keyboardType="email-address"
         autoCapitalize="none"
       />
       <TextInput
-        className="border border-gray-300 rounded w-full h-10 px-3 mb-4"
+        className="text-gray-600 border border-gray-300 rounded w-full h-10 px-3 mb-4"
         placeholder="Email"
+        placeholderTextColor="gray"
         onChangeText={setEmail}
         value={email}
         keyboardType="email-address"
         autoCapitalize="none"
       />
       <TextInput
-        className="border border-gray-300 rounded w-full h-10 px-3 mb-4"
+        className="text-gray-600 border border-gray-300 rounded w-full h-10 px-3 mb-4"
         placeholder="Password"
+        placeholderTextColor="gray"
         onChangeText={setPassword}
         value={password}
         secureTextEntry

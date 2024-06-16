@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -8,6 +7,7 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import axiosInstance from '../../services/api/axiosInstance.ts';
 import {useAuth} from '../../hooks/authContext';
 
 interface User {
@@ -22,9 +22,7 @@ const NewChatScreen = ({navigation}: {navigation: any}) => {
   useEffect(() => {
     const getSuggestedUser = async () => {
       try {
-        const response = await axios.get(
-          `http://10.0.2.2:8004/users/suggested`,
-        );
+        const response = await axiosInstance.get(`/users/suggested`);
         setSuggestedUser(response.data);
       } catch (error) {
         console.error('Error fetching channels:', error);
@@ -34,7 +32,6 @@ const NewChatScreen = ({navigation}: {navigation: any}) => {
     getSuggestedUser();
     // return () => {};
   }, []);
-
   return (
     <View className="flex-1">
       <View className="flex-row items-center py-3 px-3 bg-white border-b border-slate-200">
@@ -42,13 +39,14 @@ const NewChatScreen = ({navigation}: {navigation: any}) => {
         <TextInput
           className="flex-1 p-2 bg-white rounded-md opacity-60"
           placeholder="Type a name or Group"
+          placeholderTextColor="gray"
         />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text className="ml-[14px] text-slate-400 mt-6 mb-2">Suggested</Text>
         <FlatList
           data={suggestedUser}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={item => item._id}
           scrollEnabled={false}
           renderItem={({item}) => (
             <TouchableOpacity
@@ -58,6 +56,7 @@ const NewChatScreen = ({navigation}: {navigation: any}) => {
                 navigation.navigate('Conversation', {
                   firstId: userId,
                   secondId: item._id,
+                  conversantName: item.name,
                 })
               }
               activeOpacity={0.5}
@@ -71,7 +70,7 @@ const NewChatScreen = ({navigation}: {navigation: any}) => {
               <View className="flex w-full">
                 <View className="flex flex-row items-center px-4">
                   <View className="h-10 w-10 bg-slate-400 rounded-full" />
-                  <Text className="p-3 my-2 text-black opacity-90">
+                  <Text className="p-3 my-2 text-gray-600 font-bold opacity-90">
                     {item.name}
                   </Text>
                 </View>
